@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36109.1 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sprint1", "Sprint1\Sprint1.csproj", "{372E437A-6274-4ECD-9E5B-3F79FBFF9458}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sprint1.Tests.Unit", "Sprint1.Tests.Unit\Sprint1.Tests.Unit.csproj", "{DF5ECCA7-1AC5-4670-95F9-E4E704250866}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sprint1.Tests.Integration", "Sprint1.Tests.Integration\Sprint1.Tests.Integration.csproj", "{A3F9C74E-56E3-41CF-91D9-54E7A407C52C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{372E437A-6274-4ECD-9E5B-3F79FBFF9458}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{372E437A-6274-4ECD-9E5B-3F79FBFF9458}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{372E437A-6274-4ECD-9E5B-3F79FBFF9458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF5ECCA7-1AC5-4670-95F9-E4E704250866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF5ECCA7-1AC5-4670-95F9-E4E704250866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF5ECCA7-1AC5-4670-95F9-E4E704250866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF5ECCA7-1AC5-4670-95F9-E4E704250866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3F9C74E-56E3-41CF-91D9-54E7A407C52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3F9C74E-56E3-41CF-91D9-54E7A407C52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3F9C74E-56E3-41CF-91D9-54E7A407C52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3F9C74E-56E3-41CF-91D9-54E7A407C52C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

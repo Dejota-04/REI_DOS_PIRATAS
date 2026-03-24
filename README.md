@@ -1,137 +1,103 @@
-
-# 🏴‍☠️ Rei dos Piratas - Painel Administrativo (MVP Sprint)
+# 🏴‍☠️ Rei dos Piratas - Painel Administrativo (Sprint 3)
 
 ## Sobre esta Aplicação
 
-Este repositório contém o **MVP (Produto Mínimo Viável)** de um painel administrativo para o e-commerce de mangás "Rei dos Piratas". A aplicação foi desenvolvida em **ASP.NET Core MVC** como parte da "Challenge Sprint" da faculdade pelo grupo CATECH.
+Este repositório contém a evolução do **MVP (Produto Mínimo Viável)** de um painel administrativo para o e-commerce de mangás "Rei dos Piratas". A aplicação foi desenvolvida em **ASP.NET Core MVC** como parte da "Challenge Sprint" da faculdade pelo grupo CATECH.
 
-O foco desta aplicação é fornecer uma interface web completa para o **Gerenciamento de Produtos (CRUD)**, permitindo que um administrador controle o catálogo da loja. Diferente de um protótipo simples, esta aplicação utiliza uma arquitetura robusta com persistência de dados real, conectando-se a um banco de dados **Oracle** através do **Entity Framework Core (EF Core)**.
+Na **Sprint 3**, a aplicação evoluiu de um simples CRUD para uma arquitetura observável e testável, com a implementação de **Testes Automatizados (Padrão AAA)**, **Logging Estruturado**, **Tracing/Métricas** e endpoints de **Health Check**, garantindo maior confiabilidade e nível de produção para a plataforma.
 
-## ✨ Funcionalidades Implementadas
+## ✨ Funcionalidades e Arquitetura
 
-### Gerenciamento Completo de Produtos (CRUD):
+## 📊 Monitoramento e Observabilidade
 
--   **Create:** Formulário otimizado para cadastrar novos mangás.
-    
--   **Read:**
-    
-    -   **Página de Gerenciamento (`/mangas`):** Tabela de produtos com paginação, busca por termo e ordenação por colunas (Nome, Preço, Estoque).
-        
-    -   **Página de Detalhes:** Visualização completa e estilizada de um único produto.
-        
--   **Update:** Formulário de edição que carrega os dados existentes do banco.
-    
--   **Delete:** Função de exclusão segura com confirmação em JavaScript (`confirm`).
-    
+-   **Health Checks (`/health`):** Endpoint de monitoramento de saúde da API implementado com `Microsoft.Extensions.Diagnostics.HealthChecks`. Ele valida em tempo real o status da aplicação e a disponibilidade da conexão com o banco de dados Oracle.
 
-### Persistência de Dados com Banco Real (Oracle):
+-   **Logging Estruturado:** Integração com **Serilog** substituindo o logger padrão do .NET. Os logs são gravados tanto no console quanto em arquivo local (`/logs`), incluindo ID de correlação para rastrear o ciclo de vida completo de cada requisição.
 
--   **Conexão Real:** A aplicação se conecta a um banco de dados Oracle, gerenciado pelo Entity Framework Core.
-    
--   **Mapeamento (ORM):** Uso do `ApplicationDbContext` e classes de `Model` (`Produto.cs`) com Data Annotations (`[Table]`, `[Column]`) para mapear as tabelas do Oracle.
-    
--   **Tratamento de Erros de Banco:** O código inclui lógica `try-catch` para exceções específicas do banco (ex: `OracleException`, `DbUpdateException`), impedindo a aplicação de quebrar e informando o usuário (via `TempData`) sobre erros de integridade (ex: tentar excluir um produto que já está em um pedido).
-    
+-   **Tracing e Métricas:** Configuração do **OpenTelemetry** interceptando instrumentações do ASP.NET Core e HttpClient, permitindo análises futuras de performance e gargalos.
 
-### Validação de Formulários (pt-BR):
 
--   Mensagens de erro de validação customizadas e traduzidas para o português (`[Required]`, `[StringLength]`).
-    
--   Configuração de **Globalização (pt-BR)** no `Program.cs` para que o servidor (`Model Binder`) e o cliente (`jQuery Validate`) aceitem corretamente o formato de números brasileiro (ex: **29,9**).
-    
+## 🧪 Testes Automatizados (Padrão AAA)
 
-### Interface Administrativa Responsiva:
+-   **Testes Unitários:** Utilização do **xUnit** com **Moq** e `Moq.EntityFrameworkCore` para simular o banco de dados, isolando a camada de Controller e garantindo que as regras funcionem sem dependência de infraestrutura externa.
 
--   Layout que se adapta a diferentes tamanhos de tela (desktop, tablet, mobile) utilizando Bootstrap 5.
-    
+-   **Testes de Integração:** Uso do `WebApplicationFactory` para levantar a aplicação em memória. Foi implementado um banco de dados `InMemory` nativo do EF Core isolado em um contêiner de injeção de dependências próprio, garantindo que as requisições HTTP de teste não interfiram com a conexão Oracle de produção.
+
+
+## 📦 Gerenciamento de Produtos (CRUD) e Banco Real
+
+-   Interface administrativa completa em Bootstrap 5 para Create, Read, Update e Delete de mangás.
+
+-   Persistência de dados conectada a um banco **Oracle** utilizando **Entity Framework Core 8**.
+
+-   Tratamento global de globalização (pt-BR) e captura de `DbUpdateException` e `OracleException` para garantir a integridade referencial ao usuário final.
+
 
 ## 🛠️ Tecnologias Utilizadas
 
 -   **Backend:** ASP.NET Core 8 MVC, C# 11
-    
--   **ORM:** Entity Framework Core 8
-    
--   **Banco de Dados:** Oracle Database
-    
--   **Frontend:** HTML5, CSS3, JavaScript
-    
--   **Framework CSS:** Bootstrap 5
-    
--   **Bibliotecas JS:** jQuery & jQuery Validate
-    
--   **Ambiente de Desenvolvimento:** Visual Studio 2022
-    
+
+-   **Testes e Mocking:** xUnit, Moq, Microsoft.AspNetCore.Mvc.Testing
+
+-   **Observabilidade:** Serilog, OpenTelemetry, ASP.NET Core HealthChecks
+
+-   **ORM & Banco de Dados:** Entity Framework Core 8, Oracle Database, InMemory Database (Testes)
+
+-   **Frontend:** HTML5, CSS3, JavaScript, Bootstrap 5, jQuery
+
 
 ## 🚀 Como Executar a Aplicação
 
-A aplicação requer uma conexão com um banco de dados Oracle para funcionar.
+A aplicação requer uma conexão com um banco de dados Oracle para o ambiente de execução (embora os testes rodem em memória).
 
 1.  **Clone o Repositório:**
-    
+
+    Bash
+
     ```
-    git clone [https://github.com/Dejota-04/Sprint1.git](https://github.com/Dejota-04/Sprint1.git)
-    
+    git clone https://github.com/Dejota-04/Sprint1.git
+
     ```
-    
+
 2.  **Configure a String de Conexão:**
-    
-    -   Abra o projeto no Visual Studio.
-        
-    -   No arquivo `appsettings.json`, localize a seção `ConnectionStrings`.
-        
-    -   Atualize o valor de `OracleConnection` com os dados de acesso (Data Source, User Id, Password) do seu ambiente Oracle.
-        
+
+    -   No arquivo `appsettings.json`, atualize o valor de `OracleConnection` com os dados de acesso (Data Source, User Id, Password) do seu banco.
+
 3.  **Rode as Migrations (Se Necessário):**
-    
-    -   Se o seu banco ainda não possui as tabelas, abra o "Console do Gerenciador de Pacotes" (Package Manager Console) no VS.
-        
-    -   Execute o comando: `Update-Database`
-        
-    -   O EF Core criará as tabelas necessárias (como a `PRODUTOS`) no seu banco.
-        
+
+    -   No Console do Gerenciador de Pacotes do Visual Studio, rode: `Update-Database`
+
 4.  **Execute o Projeto:**
-    
-    -   Pressione **F5** ou clique no botão ▶️ para iniciar o projeto em modo de depuração.
-        
-    -   A aplicação estará rodando em `localhost`.
-        
 
-## 📂 Estrutura do Projeto
+    -   Rode a aplicação via Visual Studio (F5) ou via CLI com `dotnet run`.
 
-O código está organizado seguindo a arquitetura padrão **Model-View-Controller (MVC)**:
 
--   **/Models:** Contém as classes de entidade (ex: `Produto.cs`).
-    
--   **/ViewModels:** Contém os DTOs para os formulários (ex: `ProdutoCreateViewModel.cs`, `ProdutoEditViewModel.cs`).
-    
--   **/Views:** Contém os arquivos `.cshtml` (HTML) da interface.
-    
--   **/Controllers:** Contém o `ProdutosController.cs` (com toda a lógica CRUD e rotas de atributo) e o `HomeController.cs`.
-    
--   **/Data:** Contém o `ApplicationDbContext.cs`, que define a sessão com o banco de dados.
-    
--   **Program.cs:** Arquivo de inicialização que configura os serviços (injeção de dependência do `DbContext`), o pipeline HTTP e a globalização `pt-BR`.
-    
--   **appsettings.json:** Armazena a string de conexão do banco de dados.
-    
+## 📈 Como Monitorar e Testar
 
-## 💡 Próximos Passos & Evolução
+## Executando os Testes Automatizados
 
-Este MVP é a fundação do painel. Os próximos passos para evoluir esta aplicação incluem:
+Os testes foram construídos para rodar independentemente da disponibilidade do banco de dados Oracle. Para rodar a suíte completa de testes de Integração e Unidade, abra o terminal na raiz do projeto e execute:
 
--   **Sistema de Upload de Imagens:** Substituir o campo de URL de imagem por um upload de arquivo real para um serviço de storage (ex: Azure Blob ou S3).
-    
--   **Autenticação e Autorização:** Adicionar uma tela de login (ASP.NET Core Identity) para proteger o painel.
-    
--   **Expandir o Domínio:** Adicionar novas entidades e seus respectivos CRUDs (ex: `Clientes`, `Pedidos`, `Categorias`).
-    
--   **Criar uma API:** Expor os dados dos produtos através de uma API .NET para ser consumida pelo frontend da loja (cliente final).
-    
+Bash
+
+```
+dotnet test
+
+```
+
+## Verificando a Saúde da Aplicação (Health Check)
+
+Com a aplicação em execução, acesse o endpoint de Health Check pelo navegador ou via Postman/cURL:
+
+-   **URL:** `http://localhost:<porta>/health`
+
+-   **Retorno Esperado:** Um JSON detalhando o status da API e do Banco Oracle (Ex: `{"status":"Healthy","checks":[{"componente":"Banco_Oracle","status":"Healthy"}]}`).
+
 
 ## 👨‍💻 Integrantes do Grupo CATECH
 
 -   **Daniel Santana Corrêa Batista** [RM559622]
-    
+
 -   **Wendell Nascimento Dourado** [RA559336]
-    
+
 -   **Jonas de Jesus Campos de Oliveira** [RM561144]
