@@ -34,9 +34,9 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
-                        <label asp-for="Preco_original" class="control-label"></label>
-                        <input asp-for="Preco_original" class="form-control" type="text" />
-                        <span asp-validation-for="Preco_original" class="text-danger"></span>
+                        <label asp-for="Preco" class="form-label"></label>
+                        <input asp-for="Preco" class="form-control" />
+                        <span asp-validation-for="Preco" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -89,6 +89,20 @@
                         <span asp-validation-for="Profundidade" class="text-danger"></span>
                     </div>
                 </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Categoria" class="form-label text-dark"></label>
+                <select asp-for="Categoria" class="form-select" asp-items="ViewBag.Categorias">
+                    <option value="">Selecione uma categoria...</option>
+                </select>
+                <span asp-validation-for="Categoria" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Autor" class="form-label"></label>
+                <input asp-for="Autor" class="form-control" />
+                <span asp-validation-for="Autor" class="text-danger"></span>
             </div>
 
             <div class="form-group mt-4">

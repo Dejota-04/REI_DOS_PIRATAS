@@ -29,6 +29,14 @@ namespace Sprint1.Controllers
                 new SelectListItem { Text = "Usado - Como Novo", Value = "2" },
                 new SelectListItem { Text = "Usado - Bom", Value = "3" }
             };
+
+            ViewBag.Categorias = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Shounen", Value = "1" },
+                new SelectListItem { Text = "Seinen", Value = "2" },
+                new SelectListItem { Text = "Shoujo", Value = "3" },
+                new SelectListItem { Text = "Isekai", Value = "4" }
+            };
         }
 
         [Route("")]
@@ -124,13 +132,16 @@ namespace Sprint1.Controllers
                     Titulo = viewModel.Titulo,
                     Descricao = viewModel.Descricao,
                     Imagem_url = viewModel.Imagem_url,
-                    Preco_original = viewModel.Preco_original,
                     Estoque = viewModel.Estoque,
                     Condicao_produto = viewModel.Condicao_produto,
                     Altura = viewModel.Altura,
                     Largura = viewModel.Largura,
                     Profundidade = viewModel.Profundidade,
-                    FuncionarioId = viewModel.FuncionarioId
+                    FuncionarioId = viewModel.FuncionarioId,
+                    Autor = viewModel.Autor,
+                    Categoria = viewModel.Categoria,
+                    Preco = viewModel.Preco,
+                    Preco_original = viewModel.Preco
                 };
                 try
                 {
@@ -170,13 +181,16 @@ namespace Sprint1.Controllers
                 Titulo = produto.Titulo,
                 Descricao = produto.Descricao,
                 Imagem_url = produto.Imagem_url,
-                Preco_original = produto.Preco_original,
+                Preco = produto.Preco,
                 Estoque = produto.Estoque,
                 Condicao_produto = produto.Condicao_produto,
                 Altura = produto.Altura,
                 Largura = produto.Largura,
                 Profundidade = produto.Profundidade,
-                FuncionarioId = produto.FuncionarioId
+                FuncionarioId = produto.FuncionarioId,
+                Autor = produto.Autor,
+                Categoria = produto.Categoria
+
             };
 
             var condicoes = new List<SelectListItem> {
@@ -186,11 +200,20 @@ namespace Sprint1.Controllers
             };
             ViewBag.Condicoes = new SelectList(condicoes, "Value", "Text", viewModel.Condicao_produto.ToString());
 
-            return View(viewModel);
+            var categorias = new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Shounen", Value = "1" },
+                    new SelectListItem { Text = "Seinen", Value = "2" },
+                    new SelectListItem { Text = "Shoujo", Value = "3" },
+                    new SelectListItem { Text = "Isekai", Value = "4" }
+                };
+            ViewBag.Categorias = new SelectList(categorias, "Value", "Text", viewModel.Categoria.ToString());
+
+                return View(viewModel);
         }
 
         [HttpPost]
-        [Route("editar/{id:long?}")] 
+        [Route("editar/{id:long?}")]
         public async Task<IActionResult> Edit(ProdutoEditViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -211,13 +234,15 @@ namespace Sprint1.Controllers
                 produtoOriginal.Titulo = viewModel.Titulo;
                 produtoOriginal.Descricao = viewModel.Descricao;
                 produtoOriginal.Imagem_url = viewModel.Imagem_url;
-                produtoOriginal.Preco_original = viewModel.Preco_original;
                 produtoOriginal.Estoque = viewModel.Estoque;
                 produtoOriginal.Condicao_produto = viewModel.Condicao_produto;
                 produtoOriginal.Altura = viewModel.Altura;
                 produtoOriginal.Largura = viewModel.Largura;
                 produtoOriginal.Profundidade = viewModel.Profundidade;
                 produtoOriginal.FuncionarioId = viewModel.FuncionarioId;
+                produtoOriginal.Autor = viewModel.Autor;
+                produtoOriginal.Categoria = viewModel.Categoria;
+                produtoOriginal.Preco = viewModel.Preco;
 
                 try
                 {

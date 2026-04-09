@@ -8,7 +8,7 @@ namespace Sprint1.Models
     {
         [Key]
         [Column("ID")]
-        public long Produto_ID { get; set; } 
+        public long Produto_ID { get; set; }
 
 
         [Required]
@@ -26,10 +26,17 @@ namespace Sprint1.Models
         [Display(Name = "URL da Imagem")]
         public string Imagem_url { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O preço é obrigatório.")]
         [Column("PRECO")]
         [Display(Name = "Preço")]
+        public double Preco { get; set; }
+
+        [Required]
+        [Column("PRECO_ORIGINAL")]
         public double Preco_original { get; set; }
+
+        [Column("PESO")]
+        public double? Peso { get; set; }
 
         [Required]
         [Column("ESTOQUE")]
@@ -38,7 +45,7 @@ namespace Sprint1.Models
         [Required]
         [Column("CONDICAO")]
         [Display(Name = "Condição")]
-        public int Condicao_produto { get; set; } 
+        public int Condicao_produto { get; set; }
 
         [Required]
         [Column("ALTURA")]
@@ -55,5 +62,16 @@ namespace Sprint1.Models
         [Required]
         [Column("FUNCIONARIO_ID")]
         public long FuncionarioId { get; set; }
+
+        [Required(ErrorMessage = "O Autor é obrigatório.")]
+        [Column("AUTOR")]
+        [StringLength(100, ErrorMessage = "O nome do autor não pode exceder 100 caracteres.")]
+        [Display(Name = "Autor")]
+        public string Autor { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "A categoria é obrigatória.")]
+        [Column("CATEGORIA")]
+        [Display(Name = "Categoria")]
+        public int Categoria { get; set; }
     }
 }

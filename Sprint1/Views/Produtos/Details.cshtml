@@ -2,51 +2,103 @@
 
 @{
     ViewData["Title"] = "Detalhes do Produto";
+
+    string categoriaNome = Model.Categoria switch
+    {
+        1 => "Shounen",
+        2 => "Seinen",
+        3 => "Shoujo",
+        4 => "Isekai",
+        _ => "Sem Categoria"
+    };
+
+    string condicaoNome = Model.Condicao_produto switch
+    {
+        1 => "Novo",
+        2 => "Usado - Como Novo",
+        3 => "Usado - Bom",
+        _ => "Não informada"
+    };
 }
 
-<div>
-    <h1 class="display-4">@Model.Titulo</h1>
+<div class="container py-4">
+
+    <div class="mb-4">
+        <h1 class="display-5 mb-1">@Model.Titulo</h1>
+        <h4 class="text-muted">Por @Model.Autor</h4>
+        <span class="badge bg-dark">@categoriaNome</span>
+    </div>
+
     <hr />
 
     <div class="row mt-4">
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
             @if (!string.IsNullOrEmpty(Model.Imagem_url))
             {
-                <img src="@Model.Imagem_url" class="img-fluid rounded shadow-sm" alt="Capa do @Model.Titulo">
+                <img src="@Model.Imagem_url"
+                     class="img-fluid rounded shadow-sm w-100"
+                     alt="Capa de @Model.Titulo"
+                     onerror="this.onerror=null;this.src='https://via.placeholder.com/600x800.png?text=Imagem+Indisponivel';">
             }
             else
             {
-                <img src="https://via.placeholder.com/600x800.png?text=Sem+Capa" class="img-fluid rounded shadow-sm" alt="Sem Capa">
+                <img src="https://via.placeholder.com/600x800.png?text=Sem+Capa" class="img-fluid rounded shadow-sm w-100" alt="Sem Capa">
             }
         </div>
 
         <div class="col-md-8">
-            <h3>@Html.DisplayNameFor(model => model.Descricao)</h3>
-            <p class="lead">@Model.Descricao</p>
-
-            <div class="mt-4 mb-4">
-                <h2 class="text-primary">
-                    @Model.Preco_original.ToString("C")
+            <div class="mb-4">
+                <h2 class="text-success fw-bold">
+                    @Model.Preco.ToString("C")
                 </h2>
+                @if (Model.Preco < Model.Preco_original)
+                {
+                    <small class="text-muted text-decoration-line-through">De: @Model.Preco_original.ToString("C")</small>
+                }
             </div>
+
+            <h5 class="fw-bold">@Html.DisplayNameFor(model => model.Descricao)</h5>
+            <p class="text-secondary" style="white-space: pre-wrap;">@(string.IsNullOrWhiteSpace(Model.Descricao) ? "Nenhuma descrição fornecida para este mangá." : Model.Descricao)</p>
 
             <hr />
 
-            <h4>Especificações</h4>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Estoque):</strong> @Model.Estoque unidades</li>
-                <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.Condicao_produto):</strong> @Model.Condicao_produto</li>
-
-                <li class="list-group-item"><strong>Dimensões (A x L x P):</strong> @Model.Altura cm x @Model.Largura cm x @Model.Profundidade cm</li>
-
-                <li class="list-group-item"><strong>@Html.DisplayNameFor(model => model.FuncionarioId):</strong> @Model.FuncionarioId</li>
-
-            </ul>
+            <h5 class="fw-bold mt-4">Especificações e Logística</h5>
+            <div class="row">
+                <div class="col-sm-6">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+                            <strong>Estoque:</strong>
+                            <span class="badge bg-@(Model.Estoque > 0 ? "primary" : "danger") rounded-pill">
+                                @Model.Estoque un.
+                            </span>
+                        </li>
+                        <li class="list-group-item bg-transparent px-0">
+                            <strong>Condição:</strong> @condicaoNome
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-transparent px-0">
+                            <strong>Dimensões:</strong> @Model.Altura x @Model.Largura x @Model.Profundidade cm
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="mt-5">
-        <a asp-action="Edit" asp-route-id="@Model.Produto_ID" class="btn btn-primary">Editar Produto</a>
-        <a asp-action="Index" class="btn btn-outline-secondary">Voltar para a Lista</a>
+    <div class="d-flex justify-content-between align-items-center mt-5 p-3 bg-light rounded border">
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Produto_ID" class="btn btn-warning shadow-sm">
+                <i class="bi bi-pencil"></i> Editar Produto
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm ms-2">Voltar</a>
+        </div>
+
+        <div class="text-end text-muted small">
+            <div><strong>ID do Produto:</strong> #@Model.Produto_ID</div>
+            <div><strong>Cadastrado por (Func. ID):</strong> #@Model.FuncionarioId</div>
+        </div>
     </div>
 </div>
